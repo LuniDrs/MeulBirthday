@@ -129,6 +129,10 @@
       : "";
 
   var tail =
+    '<div class="clock-stack" id="clock-stack">' +
+    '<div class="clock-timer" id="clock-timer" role="status" aria-live="off"></div>' +
+    '<div class="clock-fixed" id="clock-fixed" role="status" aria-live="off"></div>' +
+    "</div>" +
     '<footer class="site-footer" id="site-footer">' +
     '<div class="foot-stars" aria-hidden="true"></div>' +
     '<div class="foot-inner">' +
@@ -136,11 +140,7 @@
     '<p class="foot-date">19/09/2026</p>' +
     "</div>" +
     frameHtml +
-    "</footer>" +
-    '<div class="clock-stack" id="clock-stack">' +
-    '<div class="clock-timer" id="clock-timer" role="status" aria-live="off"></div>' +
-    '<div class="clock-fixed" id="clock-fixed" role="status" aria-live="off"></div>' +
-    "</div>";
+    "</footer>";
 
   document.body.insertAdjacentHTML("afterbegin", chrome);
   document.body.insertAdjacentHTML("beforeend", tail);
@@ -350,6 +350,7 @@
     }
     if (puzzle.solved) {
       puzzleBoard.classList.add("is-solved");
+      puzzleFrame.classList.add("is-solved");
     }
   }
 
@@ -395,6 +396,7 @@
       puzzle.solved = true;
       savePuzzle();
       puzzleBoard.classList.add("is-solved");
+      puzzleFrame.classList.add("is-solved");
     });
   }
 

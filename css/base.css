@@ -451,15 +451,22 @@ body.menu-open .menu-panel {
   color: var(--gold-soft);
 }
 
-/* ---------- Relógio + contagem (canto inferior direito) ---------- */
+/* ---------- Relógio + contagem (acima do footer, canto direito) ---------- */
 .clock-stack {
-  position: fixed;
-  right: 22px;
+  position: sticky;
   bottom: 22px;
   z-index: 40;
+  width: max-content;
+  max-width: calc(100% - 44px);
+  margin: 0 22px 0 auto;
   display: flex;
   flex-direction: column;
   align-items: flex-end;
+  pointer-events: none;
+}
+
+.clock-stack > * {
+  pointer-events: auto;
 }
 
 .clock-timer {
@@ -657,6 +664,15 @@ body.menu-open .menu-panel {
 
 .puzzle-board.is-solved {
   cursor: default;
+  background: transparent;
+  box-shadow: none;
+}
+
+.puzzle-frame.is-solved {
+  padding: 0;
+  background: none;
+  box-shadow: none;
+  border-radius: 0;
 }
 
 .puzzle-board.is-solved .puzzle-cell {
