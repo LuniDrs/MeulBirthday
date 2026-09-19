@@ -1,0 +1,26 @@
+{
+  "name": "Mell's Birthday",
+  "short_name": "Mell's Birthday",
+  "description": "Cronograma e fotos do aniversário de Mel — 19/09/2026",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0a1737",
+  "theme_color": "#0a1737",
+  "lang": "pt-BR",
+  "icons": [
+    {
+      "src": "assets/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/branding.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}
