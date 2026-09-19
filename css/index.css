@@ -1,0 +1,348 @@
+/* ---------- Hero ---------- */
+.hero {
+  text-align: center;
+  margin: 18px 0 50px;
+}
+
+.hero-title {
+  font-size: clamp(2rem, 6vw, 3.1rem);
+  font-weight: 700;
+  color: var(--gold);
+  letter-spacing: 0.5px;
+  text-shadow: 0 0 26px rgba(255, 215, 94, 0.4);
+}
+
+.hero-deco {
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+  margin-top: 16px;
+  color: var(--gold);
+  font-size: 0.9rem;
+  opacity: 0.85;
+}
+
+.hero-deco span {
+  animation: sparkle 2.4s ease-in-out infinite;
+}
+
+.hero-deco span:nth-child(2) {
+  animation-delay: 0.5s;
+}
+
+.hero-deco span:nth-child(3) {
+  animation-delay: 1s;
+}
+
+@keyframes sparkle {
+  0%,
+  100% {
+    opacity: 0.35;
+    transform: scale(0.9);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.25);
+  }
+}
+
+/* ---------- Timeline ---------- */
+.timeline {
+  position: relative;
+  padding-left: 64px;
+}
+
+.timeline-track {
+  position: absolute;
+  left: 31px;
+  top: 10px;
+  bottom: 10px;
+  width: 3px;
+  border-radius: 3px;
+  background: linear-gradient(180deg, rgba(255, 215, 94, 0.55), rgba(255, 215, 94, 0.12));
+  box-shadow: 0 0 10px rgba(255, 215, 94, 0.2);
+}
+
+.timeline-pointer {
+  position: absolute;
+  left: 32.5px;
+  top: 0;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transform: translate(-50%, 0);
+  transition: transform 1s linear;
+  will-change: transform;
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.timeline-pointer::before {
+  content: "";
+  position: absolute;
+  left: -26px;
+  right: 6px;
+  top: -12px;
+  bottom: -12px;
+}
+
+.timeline-pointer.is-dragging {
+  transition: none;
+  cursor: grabbing;
+}
+
+.pointer-chip {
+  padding: 3px 9px;
+  border-radius: 999px;
+  background: var(--gold);
+  color: var(--navy-900);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+  box-shadow: 0 0 12px rgba(255, 215, 94, 0.6);
+}
+
+.pointer-ball {
+  width: 16px;
+  height: 16px;
+  margin-top: 6px;
+  border-radius: 50%;
+  background: var(--gold);
+  animation: pulse 1.6s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 5px rgba(255, 215, 94, 0.18), 0 0 18px rgba(255, 215, 94, 0.9);
+  }
+  50% {
+    box-shadow: 0 0 0 9px rgba(255, 215, 94, 0.06), 0 0 26px rgba(255, 215, 94, 1);
+  }
+}
+
+/* ---------- Cards de evento ---------- */
+.event-list {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.event-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius);
+  background: var(--cream);
+  border: 1px solid rgba(255, 215, 94, 0.3);
+  box-shadow: var(--shadow);
+  opacity: 0;
+  transform: translateY(26px);
+  transition: transform 0.3s ease, box-shadow 0.3s ease, opacity 0.5s ease;
+  --t1: var(--ink);
+  --t2: #80620f;
+  --item: var(--ink);
+}
+
+.event-card:nth-of-type(even) {
+  --t1: #a06f05;
+  --t2: var(--ink);
+}
+
+.event-card.is-in {
+  opacity: 1;
+  transform: none;
+}
+
+@media (hover: hover) {
+  .event-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 24px 48px -20px rgba(0, 0, 0, 0.65);
+  }
+}
+
+.event-card.is-active {
+  background: var(--navy-800) url("../assets/starfall-gif-46.gif") center / cover no-repeat;
+  border-color: var(--gold);
+}
+
+.event-card.is-active::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: rgba(5, 11, 28, 0.45);
+}
+
+.event-card.is-active {
+  --t1: #fff;
+  --t2: #fff;
+  --item: #fff;
+}
+
+.event-head {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 20px 24px;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  text-align: left;
+  color: inherit;
+}
+
+.event-title {
+  flex: 1;
+  font-size: clamp(1.15rem, 3.5vw, 1.45rem);
+  font-weight: 700;
+  color: var(--t1);
+}
+
+.event-time {
+  flex: none;
+  padding: 5px 10px;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  color: var(--t2);
+  background: rgba(255, 214, 94, 0.2);
+}
+
+.event-chevron::after {
+  content: "\25be";
+  display: block;
+  font-size: 1rem;
+  color: var(--t1);
+  transition: transform 0.3s ease;
+}
+
+.event-card.is-collapsed .event-chevron::after {
+  transform: rotate(180deg);
+}
+
+.event-body {
+  position: relative;
+  z-index: 1;
+  max-height: 1500px;
+  overflow: hidden;
+  transition: max-height 0.5s ease;
+}
+
+.event-card.is-collapsed .event-body {
+  max-height: 0;
+}
+
+.event-items {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 0 24px 22px;
+}
+
+.event-item {
+  padding-top: 14px;
+  border-top: 1px dashed rgba(21, 40, 94, 0.16);
+}
+
+.item-head {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 4px;
+}
+
+.item-tag {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--item);
+}
+
+.item-dur {
+  padding: 3px 9px;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #7c4a00;
+  background: rgba(255, 200, 51, 0.22);
+}
+
+.item-desc {
+  font-size: 0.94rem;
+  line-height: 1.6;
+  color: rgba(21, 40, 94, 0.74);
+}
+
+/* estado ativo (gif de starfall) */
+.event-card.is-active .event-time {
+  color: var(--gold);
+  background: rgba(5, 11, 28, 0.5);
+}
+
+.event-card.is-active .event-item {
+  border-top-color: rgba(255, 215, 94, 0.3);
+}
+
+.event-card.is-active .item-desc {
+  color: rgba(255, 253, 243, 0.9);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.event-card.is-active .item-dur {
+  color: var(--gold);
+  background: rgba(5, 11, 28, 0.55);
+}
+
+.event-card.is-active:hover {
+  transform: none;
+}
+
+/* ---------- Responsivo ---------- */
+@media (max-width: 640px) {
+  .page {
+    padding: 88px 14px 14px;
+  }
+
+  .hero {
+    margin-bottom: 36px;
+  }
+
+  .timeline {
+    padding-left: 46px;
+  }
+
+  .timeline-track {
+    left: 23px;
+  }
+
+  .timeline-pointer {
+    left: 24.5px;
+  }
+
+  .pointer-chip {
+    font-size: 0.66rem;
+    padding: 2px 7px;
+  }
+
+  .event-head {
+    padding: 16px 16px;
+  }
+
+  .event-items {
+    padding: 0 16px 18px;
+  }
+
+  .event-time {
+    font-size: 0.7rem;
+    padding: 4px 8px;
+  }
+}
