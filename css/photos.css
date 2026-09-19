@@ -62,7 +62,14 @@
 
 /* ---------- Carrossel ---------- */
 .carousel {
+  position: relative;
   outline: none;
+}
+
+.carousel .hiding-spot {
+  position: absolute;
+  right: 12px;
+  bottom: -14px;
 }
 
 .carousel:focus-visible .carousel-window {

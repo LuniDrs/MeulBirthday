@@ -1,19 +1,26 @@
 "use strict";
 
-var CACHE_NAME = "mells-birthday-v3";
+var CACHE_NAME = "mells-birthday-v4";
 var APP_SHELL = [
   "./",
   "./index.html",
   "./photos.html",
+  "./livros.html",
+  "./artistas.html",
   "./manifest.webmanifest",
   "./css/base.css",
   "./css/index.css",
   "./css/photos.css",
+  "./css/livros.css",
+  "./css/artistas.css",
   "./js/base.js",
   "./js/index.js",
   "./js/photos.js",
+  "./js/livros.js",
+  "./js/artistas.js",
   "./assets/icon-192.png",
-  "./assets/branding.png"
+  "./assets/branding.png",
+  "./assets/cube.gif"
 ];
 
 function cachePut(request, response) {

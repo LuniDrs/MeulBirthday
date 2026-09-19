@@ -30,17 +30,60 @@
     );
   }).join("");
 
-  var isPhotos = /photos\.html$/i.test(location.pathname);
+  var SPECIAL_GUESTS = [
+    { name: "A Magistrada", file: "assets/amagistrada.png" },
+    { name: "O Anfitrião", file: "assets/oanfitrião.png" },
+    { name: "O Deus Da Morte", file: "assets/odeusdamorte.png" },
+    { name: "O Diabo", file: "assets/odiabo.png" }
+  ].sort(function (a, b) {
+    return a.name.localeCompare(b.name, "pt-BR");
+  });
 
-  var cameraIcon = isPhotos
-    ? '<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5"/><path d="m11 5-7 7 7 7"/></svg>'
-    : '<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 9.3c0-.97.78-1.75 1.75-1.75h1.9l1.32-1.86A1.75 1.75 0 0 1 10 4.92h4.01c.62 0 1.21.32 1.53.78L16.86 7.55h1.9c.97 0 1.75.78 1.75 1.75v8.1c0 .97-.78 1.75-1.75 1.75H5.25c-.97 0-1.75-.78-1.75-1.75V9.3Z"/><circle cx="12" cy="13.05" r="3.1"/></svg>';
+  var specialRows = SPECIAL_GUESTS.map(function (guest) {
+    return (
+      '<li class="guest guest--special">' +
+      '<span class="guest-avatar guest-avatar--photo">' +
+      '<img src="' + encodeURI(guest.file) + '" alt="" loading="lazy" decoding="async">' +
+      "</span>" +
+      '<span class="guest-name">' + guest.name + "</span>" +
+      "</li>"
+    );
+  }).join("");
 
-  var cameraLabel = isPhotos ? "Voltar à página principal" : "Ver fotos";
+  var PAGE = /photos\.html$/i.test(location.pathname)
+    ? "photos"
+    : /livros\.html$/i.test(location.pathname)
+      ? "livros"
+      : /artistas\.html$/i.test(location.pathname)
+        ? "artistas"
+        : "home";
+
+  var ICONS = {
+    photos: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 9.3c0-.97.78-1.75 1.75-1.75h1.9l1.32-1.86A1.75 1.75 0 0 1 10 4.92h4.01c.62 0 1.21.32 1.53.78L16.86 7.55h1.9c.97 0 1.75.78 1.75 1.75v8.1c0 .97-.78 1.75-1.75 1.75H5.25c-.97 0-1.75-.78-1.75-1.75V9.3Z"/><circle cx="12" cy="13.05" r="3.1"/></svg>',
+    livros: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>',
+    artistas: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/></svg>'
+  };
+
+  var NAV_LINKS = [
+    { page: "photos", href: "photos.html", label: "Fotos" },
+    { page: "livros", href: "livros.html", label: "Livros favoritos" },
+    { page: "artistas", href: "artistas.html", label: "Artistas favoritos" }
+  ];
+
+  var navActions =
+    '<div class="nav-actions">' +
+    NAV_LINKS.map(function (item) {
+      return (
+        '<a class="nav-icon' + (item.page === PAGE ? " is-active" : "") + '" href="' + item.href + '" aria-label="' + item.label + '" title="' + item.label + '">' +
+        ICONS[item.page] +
+        "</a>"
+      );
+    }).join("") +
+    "</div>";
 
   var chrome =
     '<nav class="navbar" aria-label="Navegação principal">' +
-    '<a class="nav-camera" href="' + (isPhotos ? "index.html" : "photos.html") + '" aria-label="' + cameraLabel + '" title="' + cameraLabel + '">' + cameraIcon + "</a>" +
+    navActions +
     '<div class="nav-stars" aria-hidden="true"></div>' +
     '<span class="nav-shoot" style="--y:18%;--d:4.6s;--delay:0s" aria-hidden="true"></span>' +
     '<span class="nav-shoot" style="--y:52%;--d:5.8s;--delay:1.7s" aria-hidden="true"></span>' +
@@ -66,10 +109,24 @@
     '<div class="menu-body">' +
     '<p class="menu-eyebrow">os poucos e bons</p>' +
     '<h3 class="menu-title">Convidados</h3>' +
-    '<ul class="guest-list">' + guestRows + "</ul>" +
+    '<ul class="guest-list">' + guestRows + specialRows + "</ul>" +
+    '<div class="menu-puzzle" id="menu-puzzle"></div>' +
     "</div>" +
     "</aside>" +
     '<div class="stars-bg" id="stars-bg" aria-hidden="true"></div>';
+
+  var frameHtml =
+    PAGE === "home"
+      ? '<div class="puzzle-frame" id="puzzle-frame" hidden>' +
+        '<button type="button" class="puzzle-board" id="puzzle-board" aria-label="Puzzle dos Seasons">' +
+        '<span class="puzzle-cell" data-q="0"></span>' +
+        '<span class="puzzle-cell" data-q="1"></span>' +
+        '<span class="puzzle-cell" data-q="2"></span>' +
+        '<span class="puzzle-cell" data-q="3"></span>' +
+        '<img class="puzzle-cube" src="assets/cube.gif" alt="Cubo girando">' +
+        "</button>" +
+        "</div>"
+      : "";
 
   var tail =
     '<footer class="site-footer" id="site-footer">' +
@@ -78,6 +135,7 @@
     '<p class="foot-wish">Feliz aniversário, Mel.</p>' +
     '<p class="foot-date">19/09/2026</p>' +
     "</div>" +
+    frameHtml +
     "</footer>" +
     '<div class="clock-stack" id="clock-stack">' +
     '<div class="clock-timer" id="clock-timer" role="status" aria-live="off"></div>' +
@@ -201,6 +259,149 @@
 
   renderCountdown();
   setInterval(renderCountdown, 1000);
+
+  /* ---------- Puzzle dos Seasons ---------- */
+  var SEASONS = [
+    "assets/seasons/Auttumn.png",
+    "assets/seasons/Blueprint.png",
+    "assets/seasons/Captura de tela 2026-09-18 234519.png",
+    "assets/seasons/Summer.png"
+  ];
+  var PUZZLE_KEY = "mell-seasons-puzzle";
+  var QUAD_POS = ["0% 0%", "100% 0%", "0% 100%", "100% 100%"];
+
+  function isReload() {
+    try {
+      var entries = performance.getEntriesByType && performance.getEntriesByType("navigation");
+      if (entries && entries.length) {
+        return entries[0].type === "reload";
+      }
+      return performance.navigation && performance.navigation.type === 1;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  function savePuzzle() {
+    try {
+      sessionStorage.setItem(PUZZLE_KEY, JSON.stringify(puzzle));
+    } catch (e) {}
+  }
+
+  var puzzle = null;
+  try {
+    puzzle = JSON.parse(sessionStorage.getItem(PUZZLE_KEY));
+  } catch (e) {}
+
+  if (!puzzle || typeof puzzle.photo !== "number" || !Array.isArray(puzzle.found)) {
+    puzzle = {
+      photo: Math.floor(Math.random() * SEASONS.length),
+      found: [false, false, false, false],
+      solved: false
+    };
+  } else if (isReload()) {
+    puzzle.photo = (puzzle.photo + 1) % SEASONS.length;
+    puzzle.found = [false, false, false, false];
+    puzzle.solved = false;
+  }
+
+  if (typeof puzzle.solved !== "boolean") {
+    puzzle.solved = false;
+  }
+
+  savePuzzle();
+
+  var seasonUrl = encodeURI(SEASONS[puzzle.photo]);
+
+  (function measureSeason() {
+    var probe = new Image();
+    probe.onload = function () {
+      if (probe.naturalWidth && probe.naturalHeight) {
+        document.documentElement.style.setProperty(
+          "--season-aspect",
+          (probe.naturalWidth / probe.naturalHeight).toFixed(4)
+        );
+      }
+    };
+    probe.src = seasonUrl;
+  })();
+
+  function foundCount() {
+    return puzzle.found.filter(Boolean).length;
+  }
+
+  var puzzleFrame = document.getElementById("puzzle-frame");
+  var puzzleBoard = document.getElementById("puzzle-board");
+  var puzzleCells = puzzleBoard ? Array.prototype.slice.call(puzzleBoard.querySelectorAll(".puzzle-cell")) : [];
+
+  function renderPuzzleFrame() {
+    if (!puzzleFrame || !puzzleBoard) {
+      return;
+    }
+    puzzleFrame.hidden = foundCount() === 0;
+    puzzleCells.forEach(function (cell, i) {
+      cell.style.backgroundImage = "url('" + seasonUrl + "')";
+      cell.style.backgroundSize = "200% 200%";
+      cell.style.backgroundPosition = QUAD_POS[i];
+      cell.classList.toggle("is-found", puzzle.found[i]);
+    });
+    if (foundCount() === 4 && !puzzle.solved) {
+      puzzleBoard.classList.add("is-complete");
+    }
+    if (puzzle.solved) {
+      puzzleBoard.classList.add("is-solved");
+    }
+  }
+
+  function collectPiece(quadrant, el) {
+    if (puzzle.found[quadrant]) {
+      return;
+    }
+    puzzle.found[quadrant] = true;
+    savePuzzle();
+    el.classList.add("is-collected");
+    el.disabled = true;
+    window.setTimeout(function () {
+      if (el.parentNode) {
+        el.parentNode.removeChild(el);
+      }
+    }, 2800);
+    renderPuzzleFrame();
+  }
+
+  function mountPiece(parent, quadrant) {
+    if (!parent || puzzle.found[quadrant]) {
+      return;
+    }
+    var el = document.createElement("button");
+    el.type = "button";
+    el.className = "puzzle-piece";
+    el.setAttribute("aria-label", "Um pedacinho escondido dos Seasons");
+    el.title = "Um pedacinho escondido...";
+    el.style.backgroundImage = "url('" + seasonUrl + "')";
+    el.style.backgroundSize = "200% 200%";
+    el.style.backgroundPosition = QUAD_POS[quadrant];
+    el.addEventListener("click", function () {
+      collectPiece(quadrant, el);
+    });
+    parent.appendChild(el);
+  }
+
+  if (puzzleBoard) {
+    puzzleBoard.addEventListener("click", function () {
+      if (puzzle.solved || foundCount() < 4) {
+        return;
+      }
+      puzzle.solved = true;
+      savePuzzle();
+      puzzleBoard.classList.add("is-solved");
+    });
+  }
+
+  renderPuzzleFrame();
+  mountPiece(document.getElementById("menu-puzzle"), 2);
+
+  window.MellPuzzle = { mountPiece: mountPiece };
 
   if ("serviceWorker" in navigator && (location.protocol === "https:" || location.hostname === "localhost" || location.hostname === "127.0.0.1")) {
     window.addEventListener("load", function () {

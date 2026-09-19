@@ -47,6 +47,7 @@
       '<span class="carousel-count" id="carousel-count" aria-live="polite"></span>' +
       "</div>" +
       '<div class="carousel-dots" id="carousel-dots">' + dotsHtml + "</div>" +
+      '<div class="hiding-spot" id="photos-hiding"></div>' +
       "</section>";
 
     document.getElementById("page").innerHTML = html;
@@ -158,4 +159,8 @@
   });
 
   render();
+
+  if (window.MellPuzzle) {
+    window.MellPuzzle.mountPiece(document.getElementById("photos-hiding"), 3);
+  }
 })();
