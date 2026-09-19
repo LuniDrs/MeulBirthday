@@ -174,7 +174,15 @@
 
   if ("serviceWorker" in navigator && (location.protocol === "https:" || location.hostname === "localhost" || location.hostname === "127.0.0.1")) {
     window.addEventListener("load", function () {
-      navigator.serviceWorker.register("service-worker.js").catch(function () {});
+      navigator.serviceWorker.register("service-worker.js", { updateViaCache: "none" }).catch(function () {});
+    });
+
+    navigator.serviceWorker.addEventListener("controllerchange", function () {
+      if (window.sessionStorage.getItem("sw-refreshed")) {
+        return;
+      }
+      window.sessionStorage.setItem("sw-refreshed", "1");
+      window.location.reload();
     });
   }
 

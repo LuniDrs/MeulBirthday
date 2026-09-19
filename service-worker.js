@@ -1,6 +1,6 @@
 "use strict";
 
-var CACHE_NAME = "mells-birthday-v2";
+var CACHE_NAME = "mells-birthday-v3";
 var APP_SHELL = [
   "./",
   "./index.html",
@@ -13,17 +13,14 @@ var APP_SHELL = [
   "./js/index.js",
   "./js/photos.js",
   "./assets/icon-192.png",
-  "./assets/branding.png",
-  "./assets/pikura-star-20750_512.gif",
-  "./assets/estrela.png",
-  "./assets/brilhar.png",
-  "./assets/meia-lua.png",
-  "./assets/galaxia.png",
-  "./assets/mel/Mel1.jpeg",
-  "./assets/mel/Mel2.jpeg",
-  "./assets/mel/Mel3.jpeg",
-  "./assets/mel/Mel4.jpeg"
+  "./assets/branding.png"
 ];
+
+function cachePut(request, response) {
+  caches.open(CACHE_NAME).then(function (cache) {
+    cache.put(request, response);
+  });
+}
 
 self.addEventListener("install", function (event) {
   event.waitUntil(
@@ -68,11 +65,10 @@ self.addEventListener("fetch", function (event) {
     event.respondWith(
       fetch(request)
         .then(function (response) {
-          var copy = response.clone();
-          return caches.open(CACHE_NAME).then(function (cache) {
-            cache.put(request, copy);
-            return response;
-          });
+          if (response) {
+            cachePut(request, response.clone());
+          }
+          return response;
         })
         .catch(function () {
           return caches.match(request).then(function (cached) {
@@ -83,21 +79,36 @@ self.addEventListener("fetch", function (event) {
     return;
   }
 
-  if (request.destination === "image" || request.destination === "font" || request.destination === "script" || request.destination === "style") {
+  if (request.destination === "script" || request.destination === "style" || request.destination === "font" || request.destination === "manifest") {
     event.respondWith(
-      caches.match(request).then(function (cached) {
-        if (cached) {
-          return cached;
-        }
-        return fetch(request).then(function (response) {
+      fetch(request)
+        .then(function (response) {
           if (response) {
-            var copy = response.clone();
-            caches.open(CACHE_NAME).then(function (cache) {
-              cache.put(request, copy);
-            });
+            cachePut(request, response.clone());
           }
           return response;
-        });
+        })
+        .catch(function () {
+          return caches.match(request);
+        })
+    );
+    return;
+  }
+
+  if (request.destination === "image") {
+    event.respondWith(
+      caches.match(request).then(function (cached) {
+        var network = fetch(request)
+          .then(function (response) {
+            if (response) {
+              cachePut(request, response.clone());
+            }
+            return response;
+          })
+          .catch(function () {
+            return cached;
+          });
+        return cached || network;
       })
     );
     return;
