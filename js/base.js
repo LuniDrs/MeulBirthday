@@ -103,17 +103,17 @@
   function bgStarCount() {
     var w = window.innerWidth;
     if (w <= 480) {
-      return 14;
+      return 6;
     }
     if (w <= 768) {
-      return 24;
+      return 12;
     }
     return 42;
   }
 
   makeStars(document.getElementById("stars-bg"), bgStarCount(), "");
   makeStars(document.querySelector(".nav-stars"), 6, "star--nav");
-  makeStars(document.querySelector(".foot-stars"), 12, "star--foot");
+  makeStars(document.querySelector(".foot-stars"), mobile ? 7 : 12, "star--foot");
 
   var toggle = document.getElementById("menu-toggle");
   var panel = document.getElementById("menu-panel");
