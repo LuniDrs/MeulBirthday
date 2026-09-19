@@ -415,17 +415,36 @@ body.menu-open .menu-panel {
   letter-spacing: 0.3px;
 }
 
-/* ---------- Relógio (desktop: canto inferior direito) ---------- */
-.clock-fixed {
+/* ---------- Relógio + contagem (canto inferior direito) ---------- */
+.clock-stack {
   position: fixed;
   right: 22px;
   bottom: 22px;
   z-index: 40;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.clock-timer {
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: var(--gold);
+  color: var(--navy-900);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  white-space: nowrap;
+  box-shadow: 0 0 16px rgba(255, 215, 94, 0.45);
+}
+
+.clock-fixed {
   display: none;
   flex-direction: column;
   align-items: flex-end;
   gap: 3px;
-  padding: 12px 18px;
+  padding: 18px 18px 12px;
   border-radius: 16px;
   background: rgba(10, 23, 55, 0.75);
   border: 1px solid rgba(255, 215, 94, 0.25);
@@ -505,6 +524,12 @@ body.menu-open .menu-panel {
 @media (min-width: 769px) {
   .clock-fixed {
     display: flex;
+  }
+
+  .clock-timer {
+    position: relative;
+    z-index: 1;
+    margin-bottom: -7px;
   }
 }
 

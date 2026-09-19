@@ -79,7 +79,10 @@
     '<p class="foot-date">19/09/2026</p>' +
     "</div>" +
     "</footer>" +
-    '<div class="clock-fixed" id="clock-fixed" role="status" aria-live="off"></div>';
+    '<div class="clock-stack" id="clock-stack">' +
+    '<div class="clock-timer" id="clock-timer" role="status" aria-live="off"></div>' +
+    '<div class="clock-fixed" id="clock-fixed" role="status" aria-live="off"></div>' +
+    "</div>";
 
   document.body.insertAdjacentHTML("afterbegin", chrome);
   document.body.insertAdjacentHTML("beforeend", tail);
@@ -171,6 +174,33 @@
 
   renderClock();
   setInterval(renderClock, 1000);
+
+  var clockTimer = document.getElementById("clock-timer");
+  var partyStart = new Date(2026, 8, 19, 8, 0, 0).getTime();
+
+  function renderCountdown() {
+    var diff = partyStart - Date.now();
+    var text;
+
+    if (diff <= 0) {
+      text = "Começou! :3";
+    } else {
+      var totalMin = Math.floor(diff / 60000);
+      var h = Math.floor(totalMin / 60);
+      var m = totalMin % 60;
+      if (h >= 1) {
+        text = "Faltam " + h + (h === 1 ? " hora" : " horas") + " e " + m + " min";
+      } else {
+        var s = Math.floor((diff % 60000) / 1000);
+        text = "Faltam " + m + " min e " + s + "s";
+      }
+    }
+
+    clockTimer.textContent = text;
+  }
+
+  renderCountdown();
+  setInterval(renderCountdown, 1000);
 
   if ("serviceWorker" in navigator && (location.protocol === "https:" || location.hostname === "localhost" || location.hostname === "127.0.0.1")) {
     window.addEventListener("load", function () {
