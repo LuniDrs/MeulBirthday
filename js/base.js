@@ -30,8 +30,17 @@
     );
   }).join("");
 
+  var isPhotos = /photos\.html$/i.test(location.pathname);
+
+  var cameraIcon = isPhotos
+    ? '<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5"/><path d="m11 5-7 7 7 7"/></svg>'
+    : '<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 9.3c0-.97.78-1.75 1.75-1.75h1.9l1.32-1.86A1.75 1.75 0 0 1 10 4.92h4.01c.62 0 1.21.32 1.53.78L16.86 7.55h1.9c.97 0 1.75.78 1.75 1.75v8.1c0 .97-.78 1.75-1.75 1.75H5.25c-.97 0-1.75-.78-1.75-1.75V9.3Z"/><circle cx="12" cy="13.05" r="3.1"/></svg>';
+
+  var cameraLabel = isPhotos ? "Voltar à página principal" : "Ver fotos";
+
   var chrome =
     '<nav class="navbar" aria-label="Navegação principal">' +
+    '<a class="nav-camera" href="' + (isPhotos ? "index.html" : "photos.html") + '" aria-label="' + cameraLabel + '" title="' + cameraLabel + '">' + cameraIcon + "</a>" +
     '<div class="nav-stars" aria-hidden="true"></div>' +
     '<span class="nav-shoot" style="--y:18%;--d:4.6s;--delay:0s" aria-hidden="true"></span>' +
     '<span class="nav-shoot" style="--y:52%;--d:5.8s;--delay:1.7s" aria-hidden="true"></span>' +

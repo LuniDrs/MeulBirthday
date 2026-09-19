@@ -1,6 +1,6 @@
 "use strict";
 
-var CACHE_NAME = "mells-birthday-v1";
+var CACHE_NAME = "mells-birthday-v2";
 var APP_SHELL = [
   "./",
   "./index.html",
@@ -18,7 +18,11 @@ var APP_SHELL = [
   "./assets/estrela.png",
   "./assets/brilhar.png",
   "./assets/meia-lua.png",
-  "./assets/galaxia.png"
+  "./assets/galaxia.png",
+  "./assets/mel/Mel1.jpeg",
+  "./assets/mel/Mel2.jpeg",
+  "./assets/mel/Mel3.jpeg",
+  "./assets/mel/Mel4.jpeg"
 ];
 
 self.addEventListener("install", function (event) {
