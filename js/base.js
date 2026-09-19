@@ -75,11 +75,20 @@
   document.body.insertAdjacentHTML("afterbegin", chrome);
   document.body.insertAdjacentHTML("beforeend", tail);
 
+  var mobile = window.innerWidth <= 640;
+
   function makeStars(container, count, modifier) {
     for (var i = 0; i < count; i++) {
       var s = document.createElement("span");
       s.className = "star" + (modifier ? " " + modifier : "");
-      var size = modifier === "star--nav" ? 14 + Math.random() * 12 : modifier === "star--foot" ? 12 + Math.random() * 14 : 20 + Math.random() * 40;
+      var size =
+        modifier === "star--nav"
+          ? 14 + Math.random() * 12
+          : modifier === "star--foot"
+            ? 12 + Math.random() * 14
+            : mobile
+              ? 16 + Math.random() * 18
+              : 20 + Math.random() * 40;
       s.style.cssText =
         "left:" + (Math.random() * 100).toFixed(2) + "%;" +
         "top:" + (modifier === "star--nav" ? 8 + Math.random() * 72 : Math.random() * 100).toFixed(2) + "%;" +
@@ -91,7 +100,18 @@
     }
   }
 
-  makeStars(document.getElementById("stars-bg"), 42, "");
+  function bgStarCount() {
+    var w = window.innerWidth;
+    if (w <= 480) {
+      return 14;
+    }
+    if (w <= 768) {
+      return 24;
+    }
+    return 42;
+  }
+
+  makeStars(document.getElementById("stars-bg"), bgStarCount(), "");
   makeStars(document.querySelector(".nav-stars"), 6, "star--nav");
   makeStars(document.querySelector(".foot-stars"), 12, "star--foot");
 
