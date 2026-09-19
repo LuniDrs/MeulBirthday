@@ -88,6 +88,8 @@
     render();
   }
 
+  build();
+
   /* interação por toque/mouse (arrastar) */
   var dragging = false;
   var startX = 0;
@@ -155,6 +157,5 @@
     }
   });
 
-  build();
   render();
 })();
